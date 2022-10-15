@@ -1,3 +1,4 @@
+import json
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
@@ -53,7 +54,7 @@ with app.app_context():
 def show_all():
     return [location.serialize for location in Locations.query.all() if location is not None]
 
-@app.route('/location', methods=['GET', 'POST', 'DELETE'])
+@app.route('/location', methods=['GET', 'POST', 'DELETE', 'PUT'])
 @cross_origin(supports_credentials=True)
 def location():
     if request.method == 'GET':
@@ -75,11 +76,38 @@ def location():
         count = r['count']
         category = r['category']
         comments = r['comments']
-        new_location = Locations(location=location, description=description, image=image, x=x, y=y, total_rating=total_rating, count=count, category=category, comments=comments)
 
+        if Locations.query.filter_by(location=location).first() is not None:
+            raise Exception("Location already exists")
+
+        new_location = Locations(location=location, description=description, image=image, x=x, y=y, total_rating=total_rating, count=count, category=category, comments={'Comments': []})
         db.session.add(new_location)
         db.session.commit()
         return "Location added"
+
+    if request.method == 'PUT':
+        r = request.get_json()
+        location = r['location']
+        description = r['description']
+        image = r['image']
+        x = r['x']
+        y = r['y']
+        total_rating = r['total_rating']
+        count = r['count']
+        category = r['category']
+        comments = r['comments']
+
+        if Locations.query.filter_by(location=location).first() is None:
+            raise Exception("Location not found")
+        else:
+            new_total_rating = total_rating + Locations.query.filter_by(location=location).first().total_rating
+            new_count = count + Locations.query.filter_by(location=location).first().count
+            old_comments = Locations.query.filter_by(location=location).first().comments['Comments']
+            if len(comments) > 0:
+                old_comments.append(comments)
+            Locations.query.filter_by(location=location).update(dict(total_rating=new_total_rating, count=new_count, comments={'Comments': old_comments}))
+            db.session.commit()
+            return "Location updated"
 
     if request.method == 'DELETE':
         try:
