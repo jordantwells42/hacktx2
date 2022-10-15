@@ -1,16 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from "next";
+
 import { useSession, signIn, signOut } from "next-auth/react";
 import Head from "next/head";
 import PlaceCard from "../components/placecard";
 import Comment from '../components/Comment'
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Map, Marker } from "pigeon-maps";
 import Rating from "../components/Slider";
 import axios from "axios";
 
-const places = [
+/*const places = [
   {
     name: "UT Tower",
     image:
@@ -82,6 +83,7 @@ const places = [
     ],
   },
 ];
+*/
 let x = 30.2862;
 let y = -97.7394;
 const down = (
@@ -119,11 +121,13 @@ const up = (
 );
 
 const Home: NextPage = () => {
+  const [markers, setMarkers] = useState([])
   const { data: session } = useSession();
   const centerRef = useRef<[number, number]>([x, y]);
   const [rating, setRating] = useState(0);
   const [currentPlace, setCurrentPlace] = useState(places[0]);
   const [toggle, setToggle] = useState(false);
+
   const [commentToggle, setCommentToggle] = useState(false);
 
   function addNewPlace(placeInfo: any) {
@@ -137,6 +141,11 @@ const Home: NextPage = () => {
     })
   }
 
+  useEffect(() => {
+    axios.get('http://localhost:5000/').then((res) => {
+      setMarkers(res.data)
+    })
+  }, [])
   if (session) {
     return (
       <>
