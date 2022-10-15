@@ -101,6 +101,10 @@ const Home: NextPage = () => {
 
   if (session) {
     return (
+      <>
+      <Head>
+        <title>Water Fountain Spots</title>
+      </Head>
       <div className="relative h-screen w-screen overflow-hidden">
         <Map
           center={centerRef.current}
@@ -124,7 +128,6 @@ const Home: NextPage = () => {
           ))}
         </Map>
         <div
-          onBlur={() => setToggle(false)}
           className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-4 bg-slate-800 p-8 text-white"
         >
           <h2 className="text-lg ">{currentPlace?.name}</h2>
@@ -206,6 +209,7 @@ const Home: NextPage = () => {
           </button>
         </div>
       </div>
+      </>
     );
   } else {
     return (
