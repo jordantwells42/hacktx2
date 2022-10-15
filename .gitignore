@@ -153,3 +153,5 @@ cython_debug/
 
 # local test database
 test.sqlite3
+
+node_modules/
