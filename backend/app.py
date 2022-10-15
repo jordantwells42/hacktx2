@@ -1,4 +1,3 @@
-import json
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
@@ -49,16 +48,18 @@ with app.app_context():
 
 @app.route("/")
 def show_all():
-    #FIXME: SERIALIZE
-   return Locations.query.all()
+    return [location.serialize for location in Locations.query.all() if location is not None]
 
 @app.route('/location', methods=['GET', 'POST', 'DELETE'])
 @cross_origin(supports_credentials=True)
 def location():
     if request.method == 'GET':
-        location = request.args.get('location')
-        location = Locations.query.filter_by(location=location).first()
-        return jsonify(location.serialize)
+        try:
+            location = request.args.get('location')
+            location = Locations.query.filter_by(location=location).first()
+            return jsonify(location.serialize)
+        except:
+            raise Exception("Location not found")
 
     if request.method == 'POST':
         r = request.get_json()
@@ -77,12 +78,15 @@ def location():
         return "Location added"
 
     if request.method == 'DELETE':
-        location = request.args.get('location')
-        location = Locations.query.filter_by(location=location).first()
-        db.session.delete(location)
-        db.session.commit()
-        return "Location deleted"
-    return "Lmao"
+        try:
+            location = request.args.get('location')
+            location = Locations.query.filter_by(location=location).first()
+            db.session.delete(location)
+            db.session.commit()
+            return "Location deleted"
+        except:
+            raise Exception("Location not found")
+    return "Default"
 
 if __name__ == "__main__":
     app.run(debug=True)
