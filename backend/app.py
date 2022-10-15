@@ -1,4 +1,5 @@
-from flask import Flask, request
+import json
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 
@@ -31,19 +32,23 @@ def show_all():
 @cross_origin(supports_credentials=True)
 def location():
     if request.method == 'GET':
+        # Get all locations, FIXME: This is broken
+        r = request.data
+        print(r)
         location = request.args.get('location')
         location = Locations.query.filter_by(location=location).first()
-        return location
+        return jsonify(location)
 
     if request.method == 'POST':
-        location = request.args.get('location')
-        image = request.args.get('image')
-        x = request.args.get('x')
-        y = request.args.get('y')
-        total_rating = request.args.get('total_rating')
-        count = request.args.get('count')
-        category = request.args.get('category')
-        comments = request.args.get('comments')
+        r = request.get_json()
+        location = r['location']
+        image = r['image']
+        x = r['x']
+        y = r['y']
+        total_rating = r['total_rating']
+        count = r['count']
+        category = r['category']
+        comments = r['comments']
         new_location = Locations(location=location, image=image, x=x, y=y, total_rating=total_rating, count=count, category=category, comments=comments)
 
         db.session.add(new_location)
@@ -57,3 +62,6 @@ def location():
         db.session.commit()
         return "Location deleted"
     return "Lmao"
+
+if __name__ == "__main__":
+    app.run(debug=True)
