@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios'
 /*
 create a React component like this in typescript 
 
@@ -35,11 +36,22 @@ const up = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 2
 export default function PlaceCard({ place }: any) { 
 
     const [toggle, setToggle] = useState(false);
+    const [data, setData] = useState(null);
+    
+    useEffect(() => {
+      /*axios.post('http://localhost:5000/location', 
+        {'location': 'test', 'count': 1, 'image': 'test', 'x': 10.0, 'y': 10.0, 'total_rating': 10, 'category': 'test', 'comments': {}})
+    }, [])*/
+      axios.get('http://localhost:5000/location', {params:{location: 'test'}}).then(
+        (response) => {console.log(response)})}, [])
+
 
 
 
   return (
-    <div className="flex w-2/3 md:w-1/4 flex-col items-center gap-4 rounded-xl border border-blue-100 p-4 hover:border-blue-400">
+    null
+    /*
+    <div className="flex w-full md:w-1/4 flex-col items-center gap-4 rounded-xl border border-blue-100 p-4 hover:border-blue-400">
       <div className="flex w-full flex-row">
         <h2 className="h-10 w-1/2 rounded-l-2xl bg-green-500 text-center text-2xl font-bold">
           Cool
@@ -71,5 +83,6 @@ export default function PlaceCard({ place }: any) {
         ))}
       </ul>}
     </div>
+    */
   );
 }
