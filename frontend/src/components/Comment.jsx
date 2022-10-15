@@ -2,7 +2,7 @@ import React from 'react';
 import {useState} from 'react'
 import axios from 'axios';
 
-export default function Comment() {
+export default function Comment(props) {
     const [comment, setComment] = useState('')
     const [toggle, setToggle] = useState(false)
 
@@ -42,7 +42,7 @@ export default function Comment() {
 
     //axios.update?
     function postComment () {
-        axios.post('http://localhost:3001/api/comments', {comment})
+        axios.put('http://localhost:5000/location', {comment: comment, place: props.place, name: props.name})
         .then(res => {
             console.log(res.data)
         }).catch(alert('An error occured'))
@@ -58,7 +58,7 @@ export default function Comment() {
               {toggle ? up : down}
             </div>
         { toggle ?
-        <form className = 'flex-col justify-center'>
+        <form className = 'flex-col justify-center' onSubmit = {() => {postComment()}}>
             <input 
             placeholder = 'Comment' 
             className = 'text-black w-4/5 h-1000' 

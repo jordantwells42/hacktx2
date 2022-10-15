@@ -216,7 +216,9 @@ const Home: NextPage = () => {
               </ul>
 
             )}
-            <Comment/>
+
+            {/*Look back at this, fix initial place*/}
+            <Comment place = {currentPlace ? currentPlace.name: null} name = {session.user}/>
           </div>
           <div className="absolute right-5 top-5">
             {/* signout */}
