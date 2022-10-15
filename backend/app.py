@@ -45,3 +45,10 @@ def location():
         db.session.add(new_location)
         db.session.commit()
         return "Location added"
+
+    if request.method == 'DELETE':
+        location = request.args.get('location')
+        location = Locations.query.filter_by(location=location).first()
+        db.session.delete(location)
+        db.session.commit()
+        return "Location deleted"
