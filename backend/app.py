@@ -87,27 +87,25 @@ def location():
 
     if request.method == 'PUT':
         r = request.get_json()
-        location = r['location']
-        description = r['description']
-        image = r['image']
-        x = r['x']
-        y = r['y']
-        total_rating = r['total_rating']
-        count = r['count']
-        category = r['category']
-        comments = r['comments']
-
-        if Locations.query.filter_by(location=location).first() is None:
-            raise Exception("Location not found")
-        else:
-            new_total_rating = total_rating + Locations.query.filter_by(location=location).first().total_rating
-            new_count = count + Locations.query.filter_by(location=location).first().count
-            old_comments = Locations.query.filter_by(location=location).first().comments['Comments']
-            if len(comments) > 0:
-                old_comments.append(comments)
-            Locations.query.filter_by(location=location).update(dict(total_rating=new_total_rating, count=new_count, comments={'Comments': old_comments}))
+        if 'comment' in r:        
+            location = r['location']
+            comment = r['comment']
+            user = r['user']
+            location = Locations.query.filter_by(location=location).first()
+            comment = location.comments['Comments'] + [{'user': user, 'comment': comment}]
+            Locations.query.filter_by(location=location.location).update({'comments': {'Comments': comment}})
             db.session.commit()
-            return "Location updated"
+            return "Comments updated"
+        else:
+            location = r['location']
+            rating = r['rating']
+            # FIXME: Track users and only allow one rating per user
+            location = Locations.query.filter_by(location=location).first()
+            total_rating = rating + location.total_rating
+            count = location.count + 1
+            Locations.query.filter_by(location=location.location).update({'total_rating': total_rating, 'count': count})
+            db.session.commit()
+            return "Rating updated"
 
     if request.method == 'DELETE':
         try:
