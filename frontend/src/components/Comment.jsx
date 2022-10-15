@@ -40,9 +40,8 @@ export default function Comment(props) {
         </svg>
       );
 
-    //axios.update?
     function postComment () {
-        axios.put('http://localhost:5000/location', {comment: comment, place: props.place, name: props.name})
+        axios.put('http://localhost:5000/location', {'comment': comment, 'location': props.place, 'user': props.name})
         .then(res => {
             console.log(res.data)
         }).catch(alert('An error occured'))

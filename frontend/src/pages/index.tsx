@@ -8,6 +8,7 @@ import Comment from '../components/Comment'
 import { useRef, useState } from "react";
 import { Map, Marker } from "pigeon-maps";
 import Rating from "../components/Slider";
+import axios from "axios";
 
 const places = [
   {
@@ -131,7 +132,12 @@ const Home: NextPage = () => {
     places.push(placeInfo);
   }
 
-  function postRating() {}
+  function postRating() {
+    //Check ternary statement (Similar to comments property)
+    axios.put('http://localhost:5000/location', {
+      'rating': rating, 'location': currentPlace ? currentPlace.name: ''
+    })
+  }
 
   if (session) {
     return (
