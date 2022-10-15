@@ -25,8 +25,8 @@ export default function New(addNewPlace: any) {
 
   // return React form which has the user fill in the formData information
   return (
-    <div className="flex h-screen w-screen items-center justify-start  bg-slate-400 text-white">
-      <div className="flex h-1/2 w-3/4 items-center justify-center">
+    <div className="flex h-screen w-screen items-center justify-start  bg-slate-400 text-white overflow-hidden">
+      <div className="flex h-1/2 w-full items-center justify-center">
         <div className=" flex w-1/2 items-center justify-center rounded-l-full bg-slate-800 p-20">
           <h1 className="-rotate-90 items-center justify-center text-4xl font-bold">
             Add a new place
@@ -93,7 +93,7 @@ export default function New(addNewPlace: any) {
             </button>
           </form>
         </div>
-        <div className="w-1/2 h-full">
+        <div className="w-3/4 h-screen">
           <Map
             center={centerRef.current}
             zoom={16}
