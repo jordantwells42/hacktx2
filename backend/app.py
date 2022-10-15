@@ -1,11 +1,14 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS, cross_origin
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.sqlite3'
 db = SQLAlchemy(app)
 db.init_app(app)
+
+CORS(app, supports_credentials=True)
 
 class Locations(db.Model):
     location = db.Column(db.String, primary_key=True)
@@ -25,6 +28,7 @@ def show_all():
    return Locations.query.all()
 
 @app.route('/location')
+@cross_origin(supports_credentials=True)
 def location():
     if request.method == 'GET':
         location = request.args.get('location')
