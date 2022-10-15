@@ -56,3 +56,4 @@ def location():
         db.session.delete(location)
         db.session.commit()
         return "Location deleted"
+    return "Lmao"
