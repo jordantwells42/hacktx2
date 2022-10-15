@@ -75,7 +75,7 @@ def location():
         count = r['count']
         category = r['category']
         comments = r['comments']
-        new_location = Locations(location=location, image=image, x=x, y=y, total_rating=total_rating, count=count, category=category, comments=comments)
+        new_location = Locations(location=location, description=description, image=image, x=x, y=y, total_rating=total_rating, count=count, category=category, comments=comments)
 
         db.session.add(new_location)
         db.session.commit()
