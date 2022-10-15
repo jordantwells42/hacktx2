@@ -141,37 +141,37 @@ const Home: NextPage = () => {
             Rating: {currentPlace?.total_rating}
           </p>
 
-          <div className='flex-row h-40'>
+          <div className='flex-row h-1/7'>
             <button 
-            className={'bg-black h-20 w-20 rounded-full border mr-5'}
+            className={'bg-black w-1/6 rounded-full border mr-5'}
             style = {{backgroundColor: rating === 1 ? 'blue' : 'white'}}
             onClick = {() => {setRating(1)}}>
                 1
             </button>
 
             <button 
-            className={'bg-black h-20 w-20 rounded-full border mr-5'}
+            className={'bg-black w-1/6 rounded-full border mr-5'}
             style = {{backgroundColor: rating === 2 ? 'blue' : 'white'}}
-            onClick = {() => {() => {setRating(2)}}}>
+            onClick = {() => {setRating(2)}}>
                 2
             </button>
 
             <button 
-            className={'bg-black h-20 w-20 rounded-full border mr-5'}
+            className={'bg-black w-1/6 rounded-full border mr-5'}
             style = {{backgroundColor: rating === 3 ? 'blue' : 'white'}}
             onClick = {() => {setRating(3)}}>
                 3
             </button>
 
             <button 
-            className={'bg-black h-20 w-20 rounded-full border mr-5'}
+            className={'bg-black w-1/6 rounded-full border mr-5'}
             style = {{backgroundColor: rating === 4 ? 'blue' : 'white'}}
             onClick = {() => {setRating(4)}}>
                 4
             </button>
 
             <button 
-            className={'bg-black h-20 w-20 rounded-full border mr-5'}
+            className={'bg-black w-1/6 rounded-full border mr-5'}
             style = {{backgroundColor: rating === 5 ? 'blue' : 'white'}}
             onClick = {() => {setRating(5)}}>
                 5
