@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from "react";
 import { Map, Marker } from "pigeon-maps";
 import PlaceMarker from "../components/marker";
 
@@ -41,19 +41,45 @@ const places = [
       {
         user: "John Doe",
         comment: "This is a great place to study!",
-      }
-    ]
+      },
+    ],
   },
 ];
 let x = 30.2862;
 let y = -97.7394;
-const down = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-<path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-</svg>
+const down = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="h-6 w-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+    />
+  </svg>
+);
 
-const up = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-<path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-</svg>
+const up = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="h-6 w-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M4.5 15.75l7.5-7.5 7.5 7.5"
+    />
+  </svg>
+);
 export default function MapComp() {
   const centerRef = useRef<[number, number]>([x, y]);
   const [currentPlace, setCurrentPlace] = useState(places[0]);
@@ -77,37 +103,44 @@ export default function MapComp() {
             className="w-full"
             onClick={() => {
               console.log("clicked");
-              setToggle(true)
-              setCurrentPlace(place)
+              setToggle(true);
+              setCurrentPlace(place);
               centerRef.current = [place.x, place.y];
             }}
           />
         ))}
       </Map>
-      <div onBlur={() => setToggle(false)}className="absolute z-10 top-0 w-1/3 h-full bg-slate-800 text-white p-8 gap-4 flex flex-col">
-      
-      <h2 className="text-lg ">{currentPlace.name}</h2>
-      <img
-        className=" w-full aspect-[1.5] object-cover font-bold"
-        src={currentPlace.image}
-        alt={currentPlace.name}
-      />
-      <p className="text-md text-le(ft w-full font-bold">
-        Rating: {currentPlace.rating}
-      </p>
-      <p className="text-sm">{currentPlace.description}</p>
-      <div onClick={() => setCommentToggle(p => !p)} className="flex gap-4 w-full hover:cursor-pointer">
-      <h3 className="text-md w-full text-left">Comments</h3>
-      {commentToggle ? up : down} 
-      </div>
-      {commentToggle && <ul className="w-full">
-        {currentPlace.comments.map((comment: any) => (
-          <li className="flex flex-row" key={comment.comment}>
-            <p className="text-left text-sm">{comment.user}</p>&nbsp;-&nbsp;
-            <p className="text-left text-sm italic">{comment.comment}</p>
-          </li>
-        ))}
-      </ul>}
+      <div
+        onBlur={() => setToggle(false)}
+        className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-4 bg-slate-800 p-8 text-white"
+      >
+        <h2 className="text-lg ">{currentPlace.name}</h2>
+        <img
+          className=" aspect-[1.5] w-full object-cover font-bold"
+          src={currentPlace.image}
+          alt={currentPlace.name}
+        />
+        <p className="text-md text-le(ft w-full font-bold">
+          Rating: {currentPlace.rating}
+        </p>
+        <p className="text-sm">{currentPlace.description}</p>
+        <div
+          onClick={() => setCommentToggle((p) => !p)}
+          className="flex w-full gap-4 hover:cursor-pointer"
+        >
+          <h3 className="text-md w-full text-left">Comments</h3>
+          {commentToggle ? up : down}
+        </div>
+        {commentToggle && (
+          <ul className="w-full">
+            {currentPlace.comments.map((comment: any) => (
+              <li className="flex flex-row" key={comment.comment}>
+                <p className="text-left text-sm">{comment.user}</p>&nbsp;-&nbsp;
+                <p className="text-left text-sm italic">{comment.comment}</p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
