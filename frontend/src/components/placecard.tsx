@@ -42,6 +42,8 @@ export default function PlaceCard({ place }: any) {
       /*axios.post('http://localhost:5000/location', 
         {'location': 'test', 'count': 1, 'image': 'test', 'x': 10.0, 'y': 10.0, 'total_rating': 10, 'category': 'test', 'comments': {}})
     }, [])*/
+
+      //Move to maps
       axios.get('http://localhost:5000/location', {params:{location: 'test'}}).then(
         (response) => {console.log(response)})}, [])
 

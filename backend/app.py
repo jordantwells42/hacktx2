@@ -49,6 +49,7 @@ with app.app_context():
 
 @app.route("/")
 def show_all():
+    #FIXME: SERIALIZE
    return Locations.query.all()
 
 @app.route('/location', methods=['GET', 'POST', 'DELETE'])
