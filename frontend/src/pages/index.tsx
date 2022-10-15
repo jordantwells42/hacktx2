@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Head from "next/head";
 import PlaceCard from "../components/placecard";
+import Comment from '../components/Comment'
 
 import { useRef, useState } from "react";
 import { Map, Marker } from "pigeon-maps";
@@ -181,7 +182,9 @@ const Home: NextPage = () => {
                   </li>
                 ))}
               </ul>
+
             )}
+            <Comment/>
           </div>
           <div className="absolute right-5 top-5">
             {/* signout */}
