@@ -12,6 +12,7 @@ CORS(app, supports_credentials=True)
 
 class Locations(db.Model):
     location = db.Column(db.String, primary_key=True)
+    description = db.Column(db.String)
     image = db.Column(db.String)
     x = db.Column(db.Float)
     y = db.Column(db.Float)
@@ -20,8 +21,9 @@ class Locations(db.Model):
     category = db.Column(db.String)
     comments = db.Column(db.JSON)
 
-    def __init__(self, location, image, x, y, total_rating, count, category, comments):
+    def __init__(self, location, description, image, x, y, total_rating, count, category, comments):
         self.location = location
+        self.description = description
         self.image = image
         self.x = x
         self.y = y
@@ -34,6 +36,7 @@ class Locations(db.Model):
     def serialize(self):
         return {
             'location': self.location,
+            'description': self.description,
             'image': self.image,
             'x': self.x,
             'y': self.y,
@@ -64,6 +67,7 @@ def location():
     if request.method == 'POST':
         r = request.get_json()
         location = r['location']
+        description = r['description']
         image = r['image']
         x = r['x']
         y = r['y']
