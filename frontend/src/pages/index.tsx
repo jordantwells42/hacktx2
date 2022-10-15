@@ -90,7 +90,7 @@ const up = (
 const Home: NextPage = () => {
   const { data: session } = useSession();
   const centerRef = useRef<[number, number]>([x, y]);
-  const [rating, setRating] = useState(0)
+  const [rating, setRating] = useState(0);
   const [currentPlace, setCurrentPlace] = useState(places[0]);
   const [toggle, setToggle] = useState(false);
   const [commentToggle, setCommentToggle] = useState(false);
@@ -99,116 +99,100 @@ const Home: NextPage = () => {
     places.push(placeInfo);
   }
 
+  function postRating(){
+
+  }
+
   if (session) {
     return (
       <>
-      <Head>
-        <title>Water Fountain Spots</title>
-      </Head>
-      <div className="relative h-screen w-screen overflow-hidden">
-        <Map
-          center={centerRef.current}
-          zoom={17}
-          onBoundsChanged={({ center }) => {
-            centerRef.current = center;
-          }}
-        >
-          {places.map((place) => (
-            <Marker
-              key={place.name}
-              anchor={[place.x, place.y]}
-              width={50}
-              className="w-full"
-              onClick={() => {
-                setToggle(true);
-                setCurrentPlace(place);
-                centerRef.current = [place.x, place.y];
-              }}
+        <Head>
+          <title>Water Fountain Spots</title>
+        </Head>
+        <div className="relative h-screen w-screen overflow-hidden">
+          <Map
+            center={centerRef.current}
+            zoom={17}
+            onBoundsChanged={({ center }) => {
+              centerRef.current = center;
+            }}
+          >
+            {places.map((place) => (
+              <Marker
+                key={place.name}
+                anchor={[place.x, place.y]}
+                width={50}
+                className="w-full"
+                onClick={() => {
+                  setToggle(true);
+                  setCurrentPlace(place);
+                  centerRef.current = [place.x, place.y];
+                }}
+              />
+            ))}
+          </Map>
+          <div className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-3 bg-slate-800 p-8 text-white">
+            <h2 className="text-lg font-bold text-3xl uppercase">{currentPlace?.name}</h2>
+            <h3 className="italic">{currentPlace?.category}</h3>
+            <img
+              className=" aspect-[1.5] w-full object-cover font-bold"
+              src={currentPlace?.image}
+              alt={currentPlace?.name}
             />
-          ))}
-        </Map>
-        <div
-          className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-4 bg-slate-800 p-8 text-white"
-        >
-          <h2 className="text-lg ">{currentPlace?.name}</h2>
-          <h3>{currentPlace?.category}</h3>
-          <img
-            className=" aspect-[1.5] w-full object-cover font-bold"
-            src={currentPlace?.image}
-            alt={currentPlace?.name}
-          />
-          <p className="text-md text-le(ft w-full font-bold">
-            Rating: {currentPlace?.total_rating}
-          </p>
+            <p className="text-md text-le(ft w-full font-bold">
+              Rating: {currentPlace?.total_rating}
+            </p>
 
-          <div className='flex-row h-40'>
-            <button 
-            className={'bg-black h-20 w-20 rounded-full border mr-5'}
-            style = {{backgroundColor: rating === 1 ? 'blue' : 'white'}}
-            onClick = {() => {setRating(1)}}>
-                1
-            </button>
-
-            <button 
-            className={'bg-black h-20 w-20 rounded-full border mr-5'}
-            style = {{backgroundColor: rating === 2 ? 'blue' : 'white'}}
-            onClick = {() => {() => {setRating(2)}}}>
-                2
-            </button>
-
-            <button 
-            className={'bg-black h-20 w-20 rounded-full border mr-5'}
-            style = {{backgroundColor: rating === 3 ? 'blue' : 'white'}}
-            onClick = {() => {setRating(3)}}>
-                3
-            </button>
-
-            <button 
-            className={'bg-black h-20 w-20 rounded-full border mr-5'}
-            style = {{backgroundColor: rating === 4 ? 'blue' : 'white'}}
-            onClick = {() => {setRating(4)}}>
-                4
-            </button>
-
-            <button 
-            className={'bg-black h-20 w-20 rounded-full border mr-5'}
-            style = {{backgroundColor: rating === 5 ? 'blue' : 'white'}}
-            onClick = {() => {setRating(5)}}>
-                5
-            </button>
-            
-        </div>
-
-          <p className="text-sm">{currentPlace?.description}</p>
-          <div
-            onClick={() => setCommentToggle((p) => !p)}
-            className="flex w-full gap-4 hover:cursor-pointer"
-          >
-            <h3 className="text-md w-full text-left">Comments</h3>
-            {commentToggle ? up : down}
-          </div>
-          {commentToggle && (
-            <ul className="w-full">
-              {currentPlace?.comments.map((comment: any) => (
-                <li className="flex flex-row" key={comment.comment}>
-                  <p className="text-left text-sm">{comment.user}</p>
-                  &nbsp;-&nbsp;
-                  <p className="text-left text-sm italic">{comment.comment}</p>
-                </li>
+            <div className="w-full flex items-center justify-between">
+              {[1, 2, 3, 4, 5].map((num) => (
+                <button
+                  key={num}
+                  className={`w-[10%] aspect-square rounded-full bg-black ${rating === num ? "bg-slate-600" : ""}`}
+                  onClick={() => {
+                    setRating(num);
+                  }}
+                >
+                  {num}
+                </button>
               ))}
-            </ul>
-          )}
+              {/* submit rating */}
+              <button className="bg-slate-400 p-2 rounded-2xl" onClick={() => postRating()}>
+                Submit
+              </button>
+            </div>
+
+            <p className="text-sm">{currentPlace?.description}</p>
+            <div
+              onClick={() => setCommentToggle((p) => !p)}
+              className="flex w-full gap-4 hover:cursor-pointer"
+            >
+              <h3 className="text-md w-full text-left">Comments</h3>
+              {commentToggle ? up : down}
+            </div>
+            {commentToggle && (
+              <ul className="w-full">
+                {currentPlace?.comments.map((comment: any) => (
+                  <li className="flex flex-row" key={comment.comment}>
+                    <p className="text-left text-sm">{comment.user}</p>
+                    &nbsp;-&nbsp;
+                    <p className="text-left text-sm italic">
+                      {comment.comment}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div className="absolute right-5 top-5">
+            {/* signout */}
+            <button
+              onClick={() => signOut()}
+              className="rounded-md bg-slate-800 p-2 text-white"
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
-        <div className="absolute right-5 top-5">
-          {/* signout */}
-          <button
-            onClick={() => signOut()}
-            className="rounded-md bg-slate-800 p-2 text-white"
-          >
-            Sign Out
-          </button>
-        </div>
-      </div>
       </>
     );
   } else {

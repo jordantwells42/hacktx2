@@ -75,15 +75,20 @@ export default function New(addNewPlace: any) {
             <label className="w-full text-left" htmlFor="rating">
               Rating
             </label>
-            <input
-              type="number"
-              id="rating"
-              value={formData.rating}
-              className="rounded-sm p-2 text-black "
-              onChange={(e) =>
-                setFormData({ ...formData, rating: parseInt(e.target.value) })
-              }
-            />
+            <div className="w-full flex items-center justify-between">
+              {[1, 2, 3, 4, 5].map((num) => (
+                <button
+                  key={num}
+                  className={`w-[10%] aspect-square rounded-full bg-black ${formData.rating === num ? "bg-slate-600" : ""}`}
+                  onClick={() => {
+                    setFormData({ ...formData, rating: num });
+                  }}
+                >
+                  {num}
+                </button>
+              ))}
+              {/* submit rating */}
+            </div>
 
             <button
               className="w-full rounded-2xl bg-slate-500 py-1 "
@@ -93,7 +98,8 @@ export default function New(addNewPlace: any) {
             </button>
           </form>
         </div>
-        <div className="w-3/4 h-screen">
+        <div className="w-screen h-screen flex items-center justify-start bg-slate-800">
+        <div className="w-3/4 h-4/5">
           <Map
             center={centerRef.current}
             zoom={16}
@@ -110,6 +116,7 @@ export default function New(addNewPlace: any) {
               ></Marker>
             ))}
           </Map>
+        </div>
         </div>
       </div>
     </div>
