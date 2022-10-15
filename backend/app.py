@@ -27,7 +27,7 @@ with app.app_context():
 def show_all():
    return Locations.query.all()
 
-@app.route('/location')
+@app.route('/location', methods=['GET', 'POST', 'DELETE'])
 @cross_origin(supports_credentials=True)
 def location():
     if request.method == 'GET':
