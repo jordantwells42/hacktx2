@@ -39,7 +39,7 @@ export default function PlaceCard({ place }: any) {
 
 
   return (
-    <div className="flex w-full md:w-1/4 flex-col items-center gap-4 rounded-xl border border-blue-100 p-4 hover:border-blue-400">
+    <div className="flex w-2/3 md:w-1/4 flex-col items-center gap-4 rounded-xl border border-blue-100 p-4 hover:border-blue-400">
       <div className="flex w-full flex-row">
         <h2 className="h-10 w-1/2 rounded-l-2xl bg-green-500 text-center text-2xl font-bold">
           Cool
