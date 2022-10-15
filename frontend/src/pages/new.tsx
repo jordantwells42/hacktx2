@@ -19,7 +19,7 @@ export default function New(addNewPlace: any) {
     name: "",
     image: "",
     description: "",
-    rating: 0,
+    rating: 1,
     comments: [],
   });
 
@@ -32,7 +32,7 @@ export default function New(addNewPlace: any) {
             Add a new place
           </h1>
 
-          <form className="flex flex-col items-center gap-2 text-left ">
+          <form onSubmit={(e) => e.preventDefault()}className="flex flex-col items-center gap-2 text-left ">
             <label className="w-full text-left" htmlFor="name">
               Name
             </label>
@@ -79,20 +79,21 @@ export default function New(addNewPlace: any) {
               {[1, 2, 3, 4, 5].map((num) => (
                 <button
                   key={num}
-                  className={`w-[10%] aspect-square rounded-full bg-black ${formData.rating === num ? "bg-slate-600" : ""}`}
+                  className={`w-[20%] aspect-square rounded-full bg-black ${formData.rating === num ? "bg-slate-600" : ""}`}
                   onClick={() => {
                     setFormData({ ...formData, rating: num });
+                    console.log(formData)
                   }}
                 >
                   {num}
                 </button>
               ))}
-              {/* submit rating */}
             </div>
 
             <button
               className="w-full rounded-2xl bg-slate-500 py-1 "
               type="submit"
+              onClick={addNewPlace}
             >
               Submit
             </button>

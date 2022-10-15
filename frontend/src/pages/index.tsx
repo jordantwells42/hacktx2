@@ -30,6 +30,38 @@ const places = [
         user: "Jane Doe",
         comment: "I love this place!",
       },
+      {
+        user: "Jane Doe",
+        comment: "I love this place!",
+      },
+      {
+        user: "Jane Doe",
+        comment: "I love this place!",
+      },
+      {
+        user: "Jane Doe",
+        comment: "I love this place!",
+      },
+      {
+        user: "Jane Doe",
+        comment: "I love this place!",
+      },
+      {
+        user: "Jane Doe",
+        comment: "I love this place!",
+      },
+      {
+        user: "Jane Doe",
+        comment: "I love this place!",
+      },
+      {
+        user: "Jane Doe",
+        comment: "I love this place!",
+      },
+      {
+        user: "Jane Doe",
+        comment: "I love this place!",
+      },
     ],
   },
   {
@@ -135,7 +167,7 @@ const Home: NextPage = () => {
             <h2 className="text-lg font-bold text-3xl uppercase">{currentPlace?.name}</h2>
             <h3 className="italic">{currentPlace?.category}</h3>
             <img
-              className=" aspect-[1.5] w-full object-cover font-bold"
+              className=" aspect-[2] w-full object-cover font-bold"
               src={currentPlace?.image}
               alt={currentPlace?.name}
             />
@@ -170,7 +202,7 @@ const Home: NextPage = () => {
               {commentToggle ? up : down}
             </div>
             {commentToggle && (
-              <ul className="w-full">
+              <ul className="w-full h-20 overflow-y-scroll">
                 {currentPlace?.comments.map((comment: any) => (
                   <li className="flex flex-row" key={comment.comment}>
                     <p className="text-left text-sm">{comment.user}</p>
