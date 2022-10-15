@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ account, profile }) {
       console.log(account, profile);
       if (account.provider === "google") {
-        return profile.email.endsWith("@utexas.edu")
+        return profile.email.endsWith("utexas.edu")
       }
       return true // Do different verification for other providers that don't have `email_verified`
     },
