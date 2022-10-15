@@ -89,8 +89,8 @@ const up = (
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-  console.log(session);
   const centerRef = useRef<[number, number]>([x, y]);
+  const [rating, setRating] = useState(0)
   const [currentPlace, setCurrentPlace] = useState(places[0]);
   const [toggle, setToggle] = useState(false);
   const [commentToggle, setCommentToggle] = useState(false);
@@ -116,7 +116,6 @@ const Home: NextPage = () => {
               width={50}
               className="w-full"
               onClick={() => {
-                console.log("clicked");
                 setToggle(true);
                 setCurrentPlace(place);
                 centerRef.current = [place.x, place.y];
@@ -138,6 +137,45 @@ const Home: NextPage = () => {
           <p className="text-md text-le(ft w-full font-bold">
             Rating: {currentPlace?.total_rating}
           </p>
+
+          <div className='flex-row h-40'>
+            <button 
+            className={'bg-black h-20 w-20 rounded-full border mr-5'}
+            style = {{backgroundColor: rating === 1 ? 'blue' : 'white'}}
+            onClick = {() => {setRating(1)}}>
+                1
+            </button>
+
+            <button 
+            className={'bg-black h-20 w-20 rounded-full border mr-5'}
+            style = {{backgroundColor: rating === 2 ? 'blue' : 'white'}}
+            onClick = {() => {() => {setRating(2)}}}>
+                2
+            </button>
+
+            <button 
+            className={'bg-black h-20 w-20 rounded-full border mr-5'}
+            style = {{backgroundColor: rating === 3 ? 'blue' : 'white'}}
+            onClick = {() => {setRating(3)}}>
+                3
+            </button>
+
+            <button 
+            className={'bg-black h-20 w-20 rounded-full border mr-5'}
+            style = {{backgroundColor: rating === 4 ? 'blue' : 'white'}}
+            onClick = {() => {setRating(4)}}>
+                4
+            </button>
+
+            <button 
+            className={'bg-black h-20 w-20 rounded-full border mr-5'}
+            style = {{backgroundColor: rating === 5 ? 'blue' : 'white'}}
+            onClick = {() => {setRating(5)}}>
+                5
+            </button>
+            
+        </div>
+
           <p className="text-sm">{currentPlace?.description}</p>
           <div
             onClick={() => setCommentToggle((p) => !p)}
