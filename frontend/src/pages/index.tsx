@@ -3,10 +3,12 @@ import type { NextPage } from "next";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Head from "next/head";
 import PlaceCard from "../components/placecard";
+import Comment from '../components/Comment'
 
 import { useRef, useState } from "react";
 import { Map, Marker } from "pigeon-maps";
 import Rating from "../components/Slider";
+import axios from "axios";
 
 const places = [
   {
@@ -19,8 +21,7 @@ const places = [
     category: "Study",
     x: 30.2858,
     y: -97.7394,
-    description:
-      "The UT Tower is a 307-foot (94 m) tall campanile and observation tower located on the campus of the University of Texas at Austin. It is the tallest structure in Austin and the second-tallest educational building in the United States.",
+    description: "The UT Tower is a 307-foot (94 m) tall campanile and the centerpiece of the University of Texas at Austin campus. It is the tallest structure in Austin and the tallest educational building in Texas.",
     comments: [
       {
         user: "John Doe",
@@ -131,8 +132,11 @@ const Home: NextPage = () => {
     places.push(placeInfo);
   }
 
-  function postRating(){
-
+  function postRating() {
+    //Check ternary statement (Similar to comments property)
+    axios.put('http://localhost:5000/location', {
+      'rating': rating, 'location': currentPlace ? currentPlace.name: ''
+    })
   }
 
   if (session) {
@@ -163,8 +167,10 @@ const Home: NextPage = () => {
               />
             ))}
           </Map>
-          <div className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-3 bg-slate-800 p-8 text-white">
-            <h2 className="text-lg font-bold text-3xl uppercase">{currentPlace?.name}</h2>
+          <div className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-3 overflow-y-auto bg-slate-800 p-8 text-white">
+            <h2 className="text-3xl font-bold uppercase">
+              {currentPlace?.name}
+            </h2>
             <h3 className="italic">{currentPlace?.category}</h3>
             <img
               className=" aspect-[2] w-full object-cover font-bold"
@@ -175,11 +181,13 @@ const Home: NextPage = () => {
               Rating: {currentPlace?.total_rating}
             </p>
 
-            <div className="w-full flex items-center justify-between">
+            <div className="flex w-full items-center justify-between">
               {[1, 2, 3, 4, 5].map((num) => (
                 <button
                   key={num}
-                  className={`w-[10%] aspect-square rounded-full bg-black ${rating === num ? "bg-slate-600" : ""}`}
+                  className={`aspect-square w-[10%] rounded-full bg-black ${
+                    rating === num ? "bg-slate-600" : ""
+                  }`}
                   onClick={() => {
                     setRating(num);
                   }}
@@ -188,12 +196,15 @@ const Home: NextPage = () => {
                 </button>
               ))}
               {/* submit rating */}
-              <button className="bg-slate-400 p-2 rounded-2xl" onClick={() => postRating()}>
+              <button
+                className="rounded-2xl bg-slate-400 p-2"
+                onClick={() => postRating()}
+              >
                 Submit
               </button>
             </div>
 
-            <p className="text-sm">{currentPlace?.description}</p>
+            <p className="text-sm overflow-y-auto h-60">{currentPlace?.description}</p>
             <div
               onClick={() => setCommentToggle((p) => !p)}
               className="flex w-full gap-4 hover:cursor-pointer"
@@ -202,7 +213,7 @@ const Home: NextPage = () => {
               {commentToggle ? up : down}
             </div>
             {commentToggle && (
-              <ul className="w-full h-20 overflow-y-scroll">
+              <ul className="w-full overflow-y-auto">
                 {currentPlace?.comments.map((comment: any) => (
                   <li className="flex flex-row" key={comment.comment}>
                     <p className="text-left text-sm">{comment.user}</p>
@@ -213,7 +224,11 @@ const Home: NextPage = () => {
                   </li>
                 ))}
               </ul>
+
             )}
+
+            {/*Look back at this, fix initial place*/}
+            <Comment place = {currentPlace ? currentPlace.name: null} name = {session.user}/>
           </div>
           <div className="absolute right-5 top-5">
             {/* signout */}
