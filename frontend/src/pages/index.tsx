@@ -125,7 +125,7 @@ const Home: NextPage = () => {
   const { data: session } = useSession();
   const centerRef = useRef<[number, number]>([x, y]);
   const [rating, setRating] = useState(0);
-  const [currentPlace, setCurrentPlace] = useState(places[0]);
+  const [currentPlace, setCurrentPlace] = useState(places ? places[0] : null);
   const [toggle, setToggle] = useState(false);
 
   const [commentToggle, setCommentToggle] = useState(false);
@@ -160,7 +160,7 @@ const Home: NextPage = () => {
               centerRef.current = center;
             }}
           >
-            {places.map((place) => (
+            {places && places.map((place) => (
               <Marker
                 key={place.name}
                 anchor={[place.x, place.y]}
@@ -174,7 +174,7 @@ const Home: NextPage = () => {
               />
             ))}
           </Map>
-          <div className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-3 overflow-y-auto bg-slate-800 p-8 text-white">
+          {currentPlace && <div className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-3 overflow-y-auto bg-slate-800 p-8 text-white">
             <h2 className="text-3xl font-bold uppercase">
               {currentPlace?.name}
             </h2>
@@ -236,7 +236,7 @@ const Home: NextPage = () => {
 
             {/*Look back at this, fix initial place*/}
             <Comment place = {currentPlace ? currentPlace.name: null} name = {session.user}/>
-          </div>
+          </div>}
           <div className="absolute right-5 top-5">
             {/* signout */}
             <button
