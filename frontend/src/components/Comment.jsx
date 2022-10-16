@@ -41,10 +41,11 @@ export default function Comment(props) {
       );
 
     function postComment () {
-        axios.put('http://localhost:5000/location', {'comment': comment, 'name': props.place, 'user': props.name})
+        axios.put(process.env.NEXT_PUBLIC_ENV_LOCAL_VARIABLE + 'location', {'comment': comment, 'name': props.place, 'user': props.name})
         .then(res => {
             console.log(res.data)
-        }).catch(alert('An error occured'))
+            setComment('')
+        }).catch((err) => {alert(err)})
     }
 
     return (
@@ -60,13 +61,14 @@ export default function Comment(props) {
         <form className = 'flex-col justify-center' onSubmit = {() => {postComment()}}>
             <input 
             placeholder = 'Comment' 
+            value = {comment}
             className = 'text-black w-4/5 h-1000' 
             required 
             type ='text' 
             onChange={(e) => {setComment(e.target.value)}}
             style = {{paddingBottom: window.innerHeight/6}}/>
         
-            <button type='submit' className = "ml-1 bg-slate-400 p-2 rounded-2xl" onClick={(e) => {e.preventDefault(); console.log(comment)}}>Submit</button>
+            <input type='submit' value = 'Submit' className = "ml-1 bg-slate-400 p-2 rounded-2xl hover:bg-slate-600 transition duration-200"></input>
         </form>: null}
         </div>
     )
