@@ -135,10 +135,16 @@ const Home: NextPage = () => {
   }
 
   function postRating() {
+    if (rating == 0) {
+      return 
+    }
     //Check ternary statement (Similar to comments property)
     axios.put(process.env.NEXT_PUBLIC_ENV_LOCAL_VARIABLE + 'location', {
       'rating': rating, 'name': currentPlace ? currentPlace.name: ''
     })
+
+    //Update rating
+    setRating(0)
   }
   
 
@@ -147,6 +153,7 @@ const Home: NextPage = () => {
       setPlaces(res.data.locations)
     })
   }, [])
+
   if (session) {
     return (
       <>
@@ -175,6 +182,7 @@ const Home: NextPage = () => {
               />
             ))}
           </Map>
+          
           <div className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-3 overflow-y-auto bg-slate-800 p-8 text-white">
             <h2 className="text-3xl font-bold uppercase">
               {currentPlace?.name}
@@ -186,7 +194,7 @@ const Home: NextPage = () => {
               alt={currentPlace?.name}
             />
             <p className="text-md text-le(ft w-full font-bold">
-              Rating: {currentPlace?.total_rating}
+              Rating: {currentPlace?.total_rating/currentPlace?.count}
             </p>
 
             <div className="flex w-full items-center justify-between">
@@ -205,7 +213,7 @@ const Home: NextPage = () => {
               ))}
               {/* submit rating */}
               <button
-                className="rounded-2xl bg-slate-400 p-2"
+                className="rounded-2xl bg-slate-400 p-2 hover:bg-slate-600 transition duration-200"
                 onClick={() => postRating()}
               >
                 Submit
@@ -224,15 +232,14 @@ const Home: NextPage = () => {
               <ul className="w-full overflow-y-auto">
                 {currentPlace?.comments["Comments"].map((comment: any) => (
                   <li className="flex flex-row" key={comment.comment}>
-                    <p className="text-left text-sm">{comment.user}</p>
-                    &nbsp;-&nbsp;
+                    <p className="text-left text-sm">{comment.user.name}</p>
+                    &nbsp;&nbsp;
                     <p className="text-left text-sm italic">
                       {comment.comment}
                     </p>
                   </li>
                 ))}
               </ul>
-
             )}
 
             {/*Look back at this, fix initial place*/}

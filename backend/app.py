@@ -1,5 +1,5 @@
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 
@@ -54,9 +54,19 @@ with app.app_context():
 def show_all():
     return {"locations": [location.serialize for location in Locations.query.all() if location is not None]}
 
-@app.route('/location', methods=['GET', 'POST', 'DELETE', 'PUT'])
 @cross_origin(supports_credentials=True)
+@app.route('/location', methods=['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'])
 def location():
+    if request.method == 'OPTIONS':
+        response = Response()
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        response.headers.add('Access-Control-Max-Age', '86400')
+        response.headers.add('Access-Control-Expose-Headers', 'Authorization')
+        return response
+        
     if request.method == 'GET':
         r = request.get_json()
         try:
@@ -85,6 +95,7 @@ def location():
 
     if request.method == 'PUT':
         r = request.get_json()
+        
         if 'comment' in r:        
             name = r['name']
             comment = r['comment']
