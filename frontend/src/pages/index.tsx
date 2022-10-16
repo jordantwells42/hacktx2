@@ -136,13 +136,14 @@ const Home: NextPage = () => {
 
   function postRating() {
     //Check ternary statement (Similar to comments property)
-    axios.put('http://localhost:5000/location', {
+    axios.put(process.env.NEXT_PUBLIC_ENV_LOCAL_VARIABLE + 'location', {
       'rating': rating, 'name': currentPlace ? currentPlace.name: ''
     })
   }
+  
 
   useEffect(() => {
-    axios.get('http://localhost:5000/').then((res) => {
+    axios.get(process.env.NEXT_PUBLIC_ENV_LOCAL_VARIABLE).then((res) => {
       setPlaces(res.data.locations)
     })
   }, [])
@@ -221,7 +222,7 @@ const Home: NextPage = () => {
             </div>
             {commentToggle && (
               <ul className="w-full overflow-y-auto">
-                {currentPlace?.comments.map((comment: any) => (
+                {currentPlace?.comments["Comments"].map((comment: any) => (
                   <li className="flex flex-row" key={comment.comment}>
                     <p className="text-left text-sm">{comment.user}</p>
                     &nbsp;-&nbsp;
