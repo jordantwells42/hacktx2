@@ -174,7 +174,7 @@ const Home: NextPage = () => {
               centerRef.current = center;
             }}
           >
-            {places.map((place) => (
+            {places && places.map((place) => (
               <Marker
                 key={place.name}
                 anchor={[place.x, place.y]}
@@ -188,8 +188,28 @@ const Home: NextPage = () => {
               />
             ))}
           </Map>
-          
-          <div className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-3 overflow-y-auto bg-slate-800 p-8 text-white">
+          {currentPlace && <div className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-3 overflow-y-auto bg-slate-800 p-8 text-white">
+            <div className="absolute top-5 right-5">
+              <button onClick={() => {
+                setToggle(false);
+                setCurrentPlace(null);
+              }}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+              </div>
             <h2 className="text-3xl font-bold uppercase">
               {currentPlace?.name}
             </h2>
@@ -250,7 +270,7 @@ const Home: NextPage = () => {
 
             {/*Look back at this, fix initial place*/}
             <Comment place = {currentPlace ? currentPlace.name: null} name = {session.user}/>
-          </div>
+          </div>}
           <div className="absolute right-5 top-5">
             {/* signout */}
             <button
