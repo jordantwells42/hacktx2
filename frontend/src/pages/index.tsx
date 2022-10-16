@@ -121,7 +121,7 @@ const up = (
 );
 
 const Home: NextPage = () => {
-  const [markers, setMarkers] = useState([])
+  const [places, setPlaces] = useState([])
   const { data: session } = useSession();
   const centerRef = useRef<[number, number]>([x, y]);
   const [rating, setRating] = useState(0);
@@ -143,7 +143,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     axios.get('http://localhost:5000/').then((res) => {
-      setMarkers(res.data)
+      setPlaces(res.data.locations)
     })
   }, [])
   if (session) {

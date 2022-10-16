@@ -26,9 +26,9 @@ export default function New(addNewPlace: any) {
   // return React form which has the user fill in the formData information
   return (
     <div className="flex h-screen w-screen items-center justify-start  bg-slate-400 text-white overflow-hidden">
-      <div className="flex h-1/2 w-full items-center justify-center">
-        <div className=" flex w-1/2 items-center justify-center rounded-l-full bg-slate-800 p-20">
-          <h1 className="-rotate-90 items-center justify-center text-4xl font-bold">
+      <div className="flex h-full w-full items-center justify-center">
+        <div className="flex flex-col xl:flex-row w-1/2 h-full items-center justify-center rounded-l-full bg-slate-800 p-20">
+          <h1 className="rotate-0 xl:-rotate-90 items-center justify-center text-4xl font-bold ">
             Add a new place
           </h1>
 

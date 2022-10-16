@@ -52,7 +52,7 @@ with app.app_context():
 
 @app.route("/")
 def show_all():
-    return [location.serialize for location in Locations.query.all() if location is not None]
+    return {"locations": [location.serialize for location in Locations.query.all() if location is not None]}
 
 @app.route('/location', methods=['GET', 'POST', 'DELETE', 'PUT'])
 @cross_origin(supports_credentials=True)
