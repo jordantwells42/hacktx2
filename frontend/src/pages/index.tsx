@@ -125,9 +125,9 @@ const Home: NextPage = () => {
   const { data: session } = useSession();
   const centerRef = useRef<[number, number]>([x, y]);
   const [rating, setRating] = useState(0);
-  const [currentPlace, setCurrentPlace] = useState(places[0]);
+  const [currentPlace, setCurrentPlace] = useState(null);
   const [toggle, setToggle] = useState(false);
-
+  const [reload, setReload] = useState(false);
   const [commentToggle, setCommentToggle] = useState(false);
 
   function addNewPlace(placeInfo: any) {
@@ -139,10 +139,16 @@ const Home: NextPage = () => {
       return 
     }
     //Check ternary statement (Similar to comments property)
+    setReload((prev) => !prev);
     axios.put(process.env.NEXT_PUBLIC_ENV_LOCAL_VARIABLE + 'location', {
       'rating': rating, 'name': currentPlace ? currentPlace.name: ''
     })
-
+    .then(() => {setCurrentPlace((prev) => { 
+      var copy = prev;
+      copy.total_rating += rating;
+      copy.count += 1;
+      return copy;
+     })})
     //Update rating
     setRating(0)
   }
@@ -152,7 +158,7 @@ const Home: NextPage = () => {
     axios.get(process.env.NEXT_PUBLIC_ENV_LOCAL_VARIABLE).then((res) => {
       setPlaces(res.data.locations)
     })
-  }, [])
+  }, [reload])
 
   if (session) {
     return (
