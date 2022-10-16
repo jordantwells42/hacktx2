@@ -12,7 +12,7 @@ db.init_app(app)
 CORS(app, supports_credentials=True)
 
 class Locations(db.Model):
-    location = db.Column(db.String, primary_key=True)
+    name = db.Column(db.String, primary_key=True)
     description = db.Column(db.String)
     image = db.Column(db.String)
     x = db.Column(db.Float)
@@ -22,8 +22,8 @@ class Locations(db.Model):
     category = db.Column(db.String)
     comments = db.Column(db.JSON)
 
-    def __init__(self, location, description, image, x, y, total_rating, count, category, comments):
-        self.location = location
+    def __init__(self, name, description, image, x, y, total_rating, count, category, comments):
+        self.name = name
         self.description = description
         self.image = image
         self.x = x
@@ -36,7 +36,7 @@ class Locations(db.Model):
     @property
     def serialize(self):
         return {
-            'location': self.location,
+            'name': self.name,
             'description': self.description,
             'image': self.image,
             'x': self.x,
@@ -58,29 +58,27 @@ def show_all():
 @cross_origin(supports_credentials=True)
 def location():
     if request.method == 'GET':
+        r = request.get_json()
         try:
-            location = request.args.get('location')
-            location = Locations.query.filter_by(location=location).first()
+            name = r['name']
+            location = Locations.query.filter_by(name=name).first()
             return jsonify(location.serialize)
         except:
             raise Exception("Location not found")
 
     if request.method == 'POST':
         r = request.get_json()
-        location = r['location']
+        name = r['name']
         description = r['description']
         image = r['image']
         x = r['x']
         y = r['y']
-        total_rating = r['total_rating']
-        count = r['count']
         category = r['category']
-        comments = r['comments']
 
-        if Locations.query.filter_by(location=location).first() is not None:
+        if Locations.query.filter_by(name=name).first() is not None:
             raise Exception("Location already exists")
 
-        new_location = Locations(location=location, description=description, image=image, x=x, y=y, total_rating=total_rating, count=count, category=category, comments={'Comments': []})
+        new_location = Locations(name=name, description=description, image=image, x=x, y=y, total_rating=0, count=0, category=category, comments={'Comments': []})
         db.session.add(new_location)
         db.session.commit()
         return "Location added"
@@ -88,29 +86,30 @@ def location():
     if request.method == 'PUT':
         r = request.get_json()
         if 'comment' in r:        
-            location = r['location']
+            name = r['name']
             comment = r['comment']
             user = r['user']
-            location = Locations.query.filter_by(location=location).first()
+            location = Locations.query.filter_by(name=name).first()
             comment = location.comments['Comments'] + [{'user': user, 'comment': comment}]
-            Locations.query.filter_by(location=location.location).update({'comments': {'Comments': comment}})
+            Locations.query.filter_by(name=name).update({'comments': {'Comments': comment}})
             db.session.commit()
             return "Comments updated"
         else:
-            location = r['location']
+            name = r['name']
             rating = r['rating']
             # FIXME: Track users and only allow one rating per user
-            location = Locations.query.filter_by(location=location).first()
+            location = Locations.query.filter_by(name=name).first()
             total_rating = rating + location.total_rating
             count = location.count + 1
-            Locations.query.filter_by(location=location.location).update({'total_rating': total_rating, 'count': count})
+            Locations.query.filter_by(name=name).update({'total_rating': total_rating, 'count': count})
             db.session.commit()
             return "Rating updated"
 
     if request.method == 'DELETE':
+        r = request.get_json()
         try:
-            location = request.args.get('location')
-            location = Locations.query.filter_by(location=location).first()
+            name = r['name']
+            location = Locations.query.filter_by(name=name).first()
             db.session.delete(location)
             db.session.commit()
             return "Location deleted"
