@@ -41,7 +41,7 @@ export default function Comment(props) {
       );
 
     function postComment () {
-        axios.put('http://localhost:5000/location', {'comment': comment, 'location': props.place, 'user': props.name})
+        axios.put('http://localhost:5000/location', {'comment': comment, 'name': props.place, 'user': props.name})
         .then(res => {
             console.log(res.data)
         }).catch(alert('An error occured'))
