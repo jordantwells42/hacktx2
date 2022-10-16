@@ -125,7 +125,7 @@ const Home: NextPage = () => {
   const { data: session } = useSession();
   const centerRef = useRef<[number, number]>([x, y]);
   const [rating, setRating] = useState(0);
-  const [currentPlace, setCurrentPlace] = useState(places ? places[0] : null);
+  const [currentPlace, setCurrentPlace] = useState(null);
   const [toggle, setToggle] = useState(false);
 
   const [commentToggle, setCommentToggle] = useState(false);
@@ -183,6 +183,27 @@ const Home: NextPage = () => {
             ))}
           </Map>
           {currentPlace && <div className="absolute top-0 z-10 flex h-full w-1/3 flex-col gap-3 overflow-y-auto bg-slate-800 p-8 text-white">
+            <div className="absolute top-5 right-5">
+              <button onClick={() => {
+                setToggle(false);
+                setCurrentPlace(null);
+              }}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+              </div>
             <h2 className="text-3xl font-bold uppercase">
               {currentPlace?.name}
             </h2>

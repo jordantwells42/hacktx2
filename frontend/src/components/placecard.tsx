@@ -39,12 +39,12 @@ export default function PlaceCard({ place }: any) {
     const [data, setData] = useState(null);
     
     useEffect(() => {
-      // axios.post('http://localhost:5000/location', 
-      //   {'location': 'test1', 'count': 1, 'image': 'tower', 'x': 7.0, 'y': 18.0, 'total_rating': 10, 'category': 'test', 'comments': {}})
-      // axios.post('http://localhost:5000/location', 
-      //   {'location': 'meme', 'count': 1, 'image': 'dog', 'x': 9.0, 'y': 10.0, 'total_rating': 20, 'category': 'test', 'comments': {}})
-      // axios.post('http://localhost:5000/location', 
-      //   {'location': 'peepee', 'count': 2, 'image': 'cat', 'x': 11.0, 'y': 12.0, 'total_rating': 30, 'category': 'dog', 'comments': {}})
+       axios.post('http://localhost:5000/location', 
+         {'name': 'test1', 'count': 1, 'image': 'tower', 'x': 7.0, 'y': 18.0, 'total_rating': 10, 'category': 'test', 'comments': {}})
+       axios.post('http://localhost:5000/location', 
+         {'name': 'meme', 'count': 1, 'image': 'dog', 'x': 9.0, 'y': 10.0, 'total_rating': 20, 'category': 'test', 'comments': {}})
+       axios.post('http://localhost:5000/location', 
+         {'name': 'peepee', 'count': 2, 'image': 'cat', 'x': 11.0, 'y': 12.0, 'total_rating': 30, 'category': 'dog', 'comments': {}})
       axios.get('http://localhost:5000/location', {params:{location: 'test1'}}).then(
           (response) => {console.log(response)})
       axios.get('http://localhost:5000/', {}).then(
